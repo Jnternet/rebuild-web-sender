@@ -5,3 +5,6 @@ edition = "2021"
 
 [dependencies]
 chrono = "0.4.38"
+
+show_time = { path = "../../view/show_time" }
+entry = { path = "../../lib/entry" }

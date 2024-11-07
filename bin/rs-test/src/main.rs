@@ -1,9 +1,10 @@
 fn main() {
-    a();
+    show_name_and_time();
 }
 use std::fs;
 use std::time;
 
+#[allow(dead_code)]
 fn a() {
     let mdata = fs::metadata("test.txt").unwrap();
     let modify = mdata.modified().unwrap();
@@ -15,4 +16,8 @@ fn a() {
     let 北京时 = t.with_timezone(&chrono::FixedOffset::east_opt(8 * 3600).unwrap());
     let v = 北京时.format("%Y年%m月%d日 %H:%M:%S(北京时)");
     println!("v: {v}")
+}
+
+fn show_name_and_time() {
+    show_time::show_name_and_time(&entry::get_direntry_with_suffix("./", ".yaml"));
 }
