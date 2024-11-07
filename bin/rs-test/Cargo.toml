@@ -4,7 +4,10 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-chrono = "0.4.38"
-
 show_time = { path = "../../view/show_time" }
 entry = { path = "../../lib/entry" }
+config = { path = "../../lib/config" }
+
+chrono = "0.4.38"
+serde = { version = "1.0.214", features = ["derive"] }
+toml = "0.8.19"
