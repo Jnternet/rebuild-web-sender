@@ -1,3 +1,4 @@
 /target
 /some_test_file
 /.vscode
+/Cargo.lock
