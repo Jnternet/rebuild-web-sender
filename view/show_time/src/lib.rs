@@ -29,7 +29,7 @@ fn get_modified_time_str<'a>(d: &DirEntry) -> String {
     bj_time.format("%Y年%m月%d日 %H:%M:%S(北京时)").to_string()
 }
 
-fn sort_by_time_new_to_old(v: &[DirEntry]) -> Vec<DirEntry> {
+pub fn sort_by_time_new_to_old(v: &[DirEntry]) -> Vec<DirEntry> {
     let mut v = v.to_vec();
     v.sort_by(|a, b| {
         b.metadata()

@@ -9,6 +9,7 @@ pub struct Conf {
     pub ip: Ip,
     pub suffix: Suffix,
     pub search_dir: Dir,
+    pub thread_number: usize,
 }
 impl Conf {
     pub fn default() -> Self {
@@ -19,6 +20,7 @@ impl Conf {
             },
             suffix: Suffix(".yaml".to_string()),
             search_dir: Dir("./".to_string()),
+            thread_number: 3,
         }
     }
     pub fn read_from_path<P: AsRef<Path>>(path: P) -> anyhow::Result<Self> {
@@ -46,11 +48,11 @@ impl Conf {
 }
 #[derive(serde::Serialize, serde::Deserialize, Debug)]
 pub struct Ip {
-    ip: IpAddr,
-    proxy: Proxy,
+    pub ip: IpAddr,
+    pub proxy: Proxy,
 }
 #[derive(serde::Serialize, serde::Deserialize, Debug)]
-pub struct Proxy(u16);
+pub struct Proxy(pub u16);
 
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
 pub struct Suffix(pub String);

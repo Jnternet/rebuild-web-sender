@@ -29,6 +29,19 @@ pub fn get_direntry_with_suffix<'a, T: AsRef<Path>, S: Clone + Into<Suffix>>(
         .filter(|d| is_right_suffix(d.path(), suffix.clone()))
         .collect()
 }
+
+#[allow(private_bounds)]
+pub fn non_empty_entrys<'a, T: AsRef<Path>, S: Clone + Into<Suffix>>(
+    path: T,
+    suffix: S,
+) -> Option<Vec<walkdir::DirEntry>> {
+    let v = get_direntry_with_suffix(path, suffix);
+    if v.is_empty() {
+        None
+    } else {
+        Some(v)
+    }
+}
 #[derive(Clone)]
 struct Suffix(String);
 
@@ -40,6 +53,11 @@ impl<'a> From<&'a str> for Suffix {
 impl From<config::Suffix> for Suffix {
     fn from(value: config::Suffix) -> Self {
         Self(value.0)
+    }
+}
+impl From<&config::Suffix> for Suffix {
+    fn from(value: &config::Suffix) -> Self {
+        Self(value.0.to_string())
     }
 }
 
