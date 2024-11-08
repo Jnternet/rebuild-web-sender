@@ -4,5 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+config = { path = "../../lib/config" }
+
 anyhow = "1.0.93"
 walkdir = "2.5.0"

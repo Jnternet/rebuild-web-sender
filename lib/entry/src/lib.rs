@@ -37,6 +37,11 @@ impl<'a> From<&'a str> for Suffix {
         Suffix(value.to_string())
     }
 }
+impl From<config::Suffix> for Suffix {
+    fn from(value: config::Suffix) -> Self {
+        Self(value.0)
+    }
+}
 
 fn is_right_suffix<'a, T: AsRef<Path>, S: Into<Suffix>>(path: T, suffix: S) -> bool {
     path.as_ref()
