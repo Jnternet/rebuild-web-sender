@@ -8,6 +8,7 @@ use std::{
 pub struct Conf {
     ip: Ip,
     suffix: Suffix,
+    dir: Dir,
 }
 impl Conf {
     pub fn default() -> Self {
@@ -17,6 +18,7 @@ impl Conf {
                 proxy: Proxy(3000),
             },
             suffix: Suffix(".yaml".to_string()),
+            dir: Dir("./".to_string()),
         }
     }
     pub fn read_from_path<P: AsRef<Path>>(path: P) -> anyhow::Result<Self> {
@@ -52,3 +54,5 @@ struct Proxy(u16);
 
 #[derive(serde::Serialize, serde::Deserialize, Debug)]
 struct Suffix(String);
+#[derive(serde::Serialize, serde::Deserialize, Debug)]
+struct Dir(String);
