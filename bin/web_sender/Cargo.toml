@@ -10,3 +10,7 @@ threadpool = { path = "../../lib/threadpool" }
 show_time = { path = "../../view/show_time" }
 choose_file = { path = "../../view/choose_file" }
 clipboard = { path = "../../lib/clipboard" }
+utils = { path = "../../lib/utils" }
+
+walkdir = "2.5.0"
+anyhow = "1.0.93"

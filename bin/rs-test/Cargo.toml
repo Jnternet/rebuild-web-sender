@@ -7,6 +7,8 @@ edition = "2021"
 show_time = { path = "../../view/show_time" }
 entry = { path = "../../lib/entry" }
 config = { path = "../../lib/config" }
+threadpool = { path = "../../lib/threadpool" }
+utils = { path = "../../lib/utils" }
 
 chrono = "0.4.38"
 serde = { version = "1.0.214", features = ["derive"] }

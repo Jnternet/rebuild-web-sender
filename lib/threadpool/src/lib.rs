@@ -21,10 +21,26 @@ impl ThreadPool {
         }
     }
     pub fn execute<F: FnOnce() + Send + 'static>(&self, f: F) -> anyhow::Result<()> {
-        if let Err(e) = self.sender.as_ref().unwrap().send(Box::new(f)) {
-            return Err(anyhow::Error::msg(format!("执行错误: {}", e)));
+        if let Err(e) = self
+            .sender
+            .as_ref()
+            .ok_or(anyhow::Error::msg("线程池无发送者"))?
+            .send(Box::new(f))
+        {
+            return Err(anyhow::Error::msg(format!("Job发送错误: {}", e)));
         }
         anyhow::Ok(())
+    }
+    pub fn execute_then_close<F: FnOnce() + Send + 'static>(&mut self, f: F) -> anyhow::Result<()> {
+        let ans = self.execute(f);
+        // drop(self);
+        self.sender.take();
+
+        while let Some(mut w) = self.list.pop() {
+            w.handle.take().unwrap().join().unwrap();
+            drop(w)
+        }
+        ans
     }
 }
 impl Drop for ThreadPool {
@@ -32,7 +48,8 @@ impl Drop for ThreadPool {
         // println!("droping tp");
         self.sender.take();
 
-        while let Some(w) = self.list.pop() {
+        while let Some(mut w) = self.list.pop() {
+            w.handle.take().unwrap().join().unwrap();
             drop(w)
         }
     }
@@ -57,7 +74,7 @@ impl Worker {
 }
 impl Drop for Worker {
     fn drop(&mut self) {
-        // println!("正在销毁线程 id: {}", self.id);
+        // eprintln!("正在销毁线程");
         if let Some(s) = self.handle.take() {
             s.join().unwrap();
         }
