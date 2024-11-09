@@ -14,7 +14,7 @@ pub fn show_name_and_time(v: &[DirEntry]) {
         });
 }
 
-fn get_modified_time_str<'a>(d: &DirEntry) -> String {
+fn get_modified_time_str(d: &DirEntry) -> String {
     let dura = chrono::Duration::from_std(
         d.metadata()
             .unwrap()

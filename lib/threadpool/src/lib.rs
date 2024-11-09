@@ -22,7 +22,7 @@ impl ThreadPool {
     }
     pub fn execute<F: FnOnce() + Send + 'static>(&self, f: F) -> anyhow::Result<()> {
         if let Err(e) = self.sender.as_ref().unwrap().send(Box::new(f)) {
-            return Err(anyhow::Error::msg(format!("执行错误: {}", e.to_string())));
+            return Err(anyhow::Error::msg(format!("执行错误: {}", e)));
         }
         anyhow::Ok(())
     }

@@ -61,6 +61,9 @@ fn main() {
     let lis = lis.expect(format!("未能成功监听:{} {}", conf.ip.ip, conf.ip.proxy.0).as_str());
     eprintln!("文件:{}", entry.file_name().to_str().unwrap());
     eprintln!("http://{}:{}", conf.ip.ip, conf.ip.proxy.0);
+
+    clipboard::set_str_to_clipboard(&format!("http://{}:{}", conf.ip.ip, conf.ip.proxy.0)).unwrap();
+    eprintln!("已自动复制到剪切板");
     let tp = threadpool::ThreadPool::new(conf.thread_number);
     // lis.incoming().flatten().for_each(move |mut t| {
     //     tp.execute(move || {

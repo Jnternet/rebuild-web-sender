@@ -9,3 +9,4 @@ entry = { path = "../../lib/entry" }
 threadpool = { path = "../../lib/threadpool" }
 show_time = { path = "../../view/show_time" }
 choose_file = { path = "../../view/choose_file" }
+clipboard = { path = "../../lib/clipboard" }
