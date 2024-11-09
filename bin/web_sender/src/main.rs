@@ -56,6 +56,7 @@ fn main() {
     //网络服务
     let mut buf = String::new();
     f.read_to_string(&mut buf).unwrap();
+    let buf = std::sync::Arc::new(buf);
     let lis = std::net::TcpListener::bind((conf.ip.ip, conf.ip.proxy.0));
     let lis = lis.expect(format!("未能成功监听:{} {}", conf.ip.ip, conf.ip.proxy.0).as_str());
     eprintln!("文件:{}", entry.file_name().to_str().unwrap());
@@ -85,16 +86,16 @@ fn main() {
         .unwrap();
     }
 }
-fn handle_connection(mut ts: TcpStream, s: String) {
+fn handle_connection(mut ts: TcpStream, s: std::sync::Arc<String>) {
     let _a = std::io::BufReader::new(&mut ts)
         .lines()
         .next()
         .unwrap()
         .unwrap();
+
     let status_line = "HTTP/1.1 200 OK";
     let contents = s;
     let length = contents.len();
-
     let response = format!("{status_line}\r\nContent-Length: {length}\r\n\r\n{contents}");
 
     // let response = s;

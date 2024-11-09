@@ -4,7 +4,7 @@ use std::sync::{
 };
 
 pub struct ThreadPool {
-    _list: Vec<Worker>,
+    list: Vec<Worker>,
     sender: Option<Sender<Job>>,
 }
 impl ThreadPool {
@@ -12,11 +12,11 @@ impl ThreadPool {
         let mut v = Vec::with_capacity(size);
         let (send, recv) = std::sync::mpsc::channel();
         let recv = Arc::new(Mutex::new(recv));
-        (0..size).for_each(|e| {
-            v.push(Worker::new(e, recv.clone()));
+        (0..size).for_each(|_| {
+            v.push(Worker::new(recv.clone()));
         });
         Self {
-            _list: v,
+            list: v,
             sender: Some(send),
         }
     }
@@ -32,17 +32,16 @@ impl Drop for ThreadPool {
         // println!("droping tp");
         self.sender.take();
 
-        while let Some(w) = self._list.pop() {
+        while let Some(w) = self.list.pop() {
             drop(w)
         }
     }
 }
 struct Worker {
-    _id: usize,
     handle: Option<std::thread::JoinHandle<()>>,
 }
 impl Worker {
-    fn new(id: usize, recv: Arc<Mutex<Receiver<Job>>>) -> Self {
+    fn new(recv: Arc<Mutex<Receiver<Job>>>) -> Self {
         let handle = std::thread::spawn(move || loop {
             match recv.lock().unwrap().recv() {
                 Ok(o) => o(),
@@ -52,7 +51,6 @@ impl Worker {
             }
         });
         Self {
-            _id: id,
             handle: Some(handle),
         }
     }
