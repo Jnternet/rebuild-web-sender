@@ -31,6 +31,6 @@ fn main() {
     //     .unwrap();
     web_sender::close_the_sender_thread(&conf);
     if let Err(e) = handle.join().unwrap() {
-        eprintln!("线程池发送Job出错:{e}")
+        eprintln!("分发线程出错:{e}")
     }
 }
