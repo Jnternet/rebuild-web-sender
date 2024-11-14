@@ -20,10 +20,10 @@ pub fn get_config() -> config::Conf {
 
 pub fn choose_send_file(conf: &Conf) -> walkdir::DirEntry {
     let mut entrys;
-    while let None = {
+    while {
         entrys = non_empty_entrys(&conf.search_dir.0, &conf.suffix);
         &entrys
-    } {
+    }.is_none() {
         eprintln!(
             "未找到后缀为:{}的文件, 请放好文件后按回车键",
             &conf.suffix.0
@@ -86,8 +86,8 @@ pub fn response_connection(
                 tp.read().unwrap().execute(move || {
                     eprintln!(
                         "任务来自:{}:{}",
-                        t.peer_addr().unwrap().ip().to_string(),
-                        t.peer_addr().unwrap().port().to_string()
+                        t.peer_addr().unwrap().ip(),
+                        t.peer_addr().unwrap().port()
                     );
                     if let Err(e) = handle_connection(t, buf) {
                         eprintln!("处理链接时出错: {e}");

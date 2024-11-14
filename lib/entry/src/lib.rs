@@ -2,7 +2,7 @@ use std::path::Path;
 
 ///这个函数自动忽略错误
 #[allow(private_bounds)]
-pub fn get_direntry_with_suffix<'a, T: AsRef<Path>, S: Clone + Into<Suffix>>(
+pub fn get_direntry_with_suffix<T: AsRef<Path>, S: Clone + Into<Suffix>>(
     path: T,
     suffix: S,
 ) -> Vec<walkdir::DirEntry> {
@@ -31,7 +31,7 @@ pub fn get_direntry_with_suffix<'a, T: AsRef<Path>, S: Clone + Into<Suffix>>(
 }
 
 #[allow(private_bounds)]
-pub fn non_empty_entrys<'a, T: AsRef<Path>, S: Clone + Into<Suffix>>(
+pub fn non_empty_entrys<T: AsRef<Path>, S: Clone + Into<Suffix>>(
     path: T,
     suffix: S,
 ) -> Option<Vec<walkdir::DirEntry>> {
@@ -61,7 +61,7 @@ impl From<&config::Suffix> for Suffix {
     }
 }
 
-fn is_right_suffix<'a, T: AsRef<Path>, S: Into<Suffix>>(path: T, suffix: S) -> bool {
+fn is_right_suffix<T: AsRef<Path>, S: Into<Suffix>>(path: T, suffix: S) -> bool {
     path.as_ref()
         .to_str()
         .unwrap()
@@ -78,6 +78,6 @@ mod tests {
 
     #[test]
     fn t_is_right_suffix() {
-        assert_eq!(true, is_right_suffix("../../zzzzzzzz/test.txt", ".txt"));
+        assert!(is_right_suffix("../../zzzzzzzz/test.txt", ".txt"));
     }
 }

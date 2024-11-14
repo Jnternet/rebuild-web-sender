@@ -46,6 +46,7 @@ pub mod ttoml {
         dbg!(&s);
         let mut f = std::fs::OpenOptions::new()
             .write(true)
+            .truncate(true)
             .create(true)
             .open("./test_conf.toml")
             .unwrap();

@@ -12,17 +12,6 @@ pub struct Conf {
     pub thread_number: usize,
 }
 impl Conf {
-    pub fn default() -> Self {
-        Conf {
-            ip: Ip {
-                ip: "127.0.0.1".parse::<IpAddr>().unwrap(),
-                proxy: Proxy(3000),
-            },
-            suffix: Suffix(".yaml".to_string()),
-            search_dir: Dir("./".to_string()),
-            thread_number: 3,
-        }
-    }
     pub fn read_from_path<P: AsRef<Path>>(path: P) -> anyhow::Result<Self> {
         let path = path.as_ref();
         let mut f = std::fs::OpenOptions::new().read(true).open(path)?;
@@ -37,6 +26,7 @@ impl Conf {
         let path = path.as_ref();
         let mut f = std::fs::OpenOptions::new()
             .write(true)
+            .truncate(true)
             .create(true)
             .open(path)?;
 
@@ -44,6 +34,19 @@ impl Conf {
         f.flush()?;
 
         anyhow::Ok(())
+    }
+}
+impl Default for Conf {
+    fn default() -> Self {
+        Conf {
+            ip: Ip {
+                ip: "127.0.0.1".parse::<IpAddr>().unwrap(),
+                proxy: Proxy(3000),
+            },
+            suffix: Suffix(".yaml".to_string()),
+            search_dir: Dir("./".to_string()),
+            thread_number: 3,
+        }
     }
 }
 #[derive(serde::Serialize, serde::Deserialize, Debug)]

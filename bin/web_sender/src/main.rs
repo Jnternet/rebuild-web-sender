@@ -6,7 +6,7 @@ fn main() {
     let buf = web_sender::get_string_from_file(&entry);
     //获得tcplistener
     let lis = std::net::TcpListener::bind((conf.ip.ip, conf.ip.proxy.0));
-    let lis = lis.expect(format!("未能成功监听:{} {}", conf.ip.ip, conf.ip.proxy.0).as_str());
+    let lis = lis.unwrap_or_else(|_| panic!("未能成功监听:{} {}", conf.ip.ip, conf.ip.proxy.0));
     //提示信息
     eprintln!("文件:{}", entry.file_name().to_str().unwrap());
     eprintln!("http://{}:{}", conf.ip.ip, conf.ip.proxy.0);

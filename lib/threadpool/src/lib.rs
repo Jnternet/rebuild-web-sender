@@ -59,14 +59,15 @@ struct Worker {
 }
 impl Worker {
     fn new(recv: Arc<Mutex<Receiver<Job>>>) -> Self {
-        let handle = std::thread::spawn(move || loop {
-            match recv.lock().unwrap().recv() {
-                Ok(o) => o(),
-                Err(_e) => {
-                    break;
-                }
-            }
-        });
+        // let handle = std::thread::spawn(move || loop {
+        //     match recv.lock().unwrap().recv() {
+        //         Ok(o) => o(),
+        //         Err(_e) => {
+        //             break;
+        //         }
+        //     }
+        // });
+        let handle = std::thread::spawn(move || while let Ok(job) = recv.lock().unwrap().recv() {job()});
         Self {
             handle: Some(handle),
         }
