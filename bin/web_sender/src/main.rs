@@ -1,7 +1,7 @@
 fn main() {
     //配置
     let conf = web_sender::get_config();
-    //选择文件
+    //选择文件, 把内容放到String里
     let entry = web_sender::choose_send_file(&conf);
     let buf = web_sender::get_string_from_file(&entry);
     //获得tcplistener
@@ -24,11 +24,6 @@ fn main() {
     let stdin = std::io::stdin();
     let mut buf = String::new();
     stdin.read_line(&mut buf).unwrap();
-    // drop(tp);
-    // tp.write()
-    //     .unwrap()
-    //     .execute_then_close(|| eprintln!("正在关闭线程池"))
-    //     .unwrap();
     web_sender::close_the_sender_thread(&conf);
     if let Err(e) = handle.join().unwrap() {
         eprintln!("分发线程出错:{e}")
